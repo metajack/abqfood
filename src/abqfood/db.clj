@@ -30,7 +30,8 @@
        (map (fn [[id name]] {:id id :name name :uri (str "/facility/" id)}))
        (sort-by :name)))
 
-(defn get-inspections [fid]
+(defn get-inspections-by-facility
+  [fid]
   (->> (q '[:find
             ?iid ?date ?result
             :in $ ?fid
@@ -42,6 +43,36 @@
           (db conn) fid)
        (map (fn [[id date result]]
               {:id id :date date :result result :facility_id fid}))))
+
+(defn get-inspections-by-result
+  [rid]
+  (->> (q '[:find
+            ?iid ?date ?facility ?fid
+            :in $ ?rid
+            :where
+            [?e :inspect/result-code ?rid]
+            [?e :inspect/facility-id ?fid]
+            [?e :inspect/facility-name ?facility]
+            [?e :inspect/serial-num ?iid]
+            [?e :inspect/inspection-date ?date]]
+          (db conn) rid)
+       (map (fn [[id date facility fid]]
+              {:id id :date date :facility facility :facility_id fid}))))
+
+(defn get-inspections-by-date
+  []
+  (->> (q '[:find
+            ?iid ?date ?facility ?fid ?result
+            :where
+            [?e :inspect/serial-num ?iid]
+            [?e :inspect/inspection-date ?date]
+            [(< "2012-09-31T00:00:00" ?date)]
+            [?e :inspect/facility-name ?facility]
+            [?e :inspect/facility-id ?fid]
+            [?e :inspect/result-desc ?result]]
+          (db conn))
+       (map (fn [[iid date facility fid result]]
+              {:id iid :date date :facility facility :facility_id fid :result result}))))
 
 (defn get-inspection [fid iid]
   (let [dbval (db conn)]
@@ -67,3 +98,13 @@
                    :violation_desc (:inspect/violation-desc e)
                    :memo (:inspect/inspection-memo e)})))
          first)))
+
+(defn get-results []
+  (->> (q '[:find
+            ?rid ?name
+            :where
+            [?e :inspect/result-code ?rid]
+            [?e :inspect/result-desc ?name]]
+          (db conn))
+       (map (fn [[id name]] {:id id :name name}))))
+

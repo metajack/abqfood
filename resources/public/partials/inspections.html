@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <ul class="simple">
+    <li ng-repeat="inspection in inspections | orderBy:orderProp">
+      <a class="btn btn-block btn-large"
+         href="#/facility/{{inspection.facility_id}}/inspection/{{inspection.id}}">
+        {{inspection.date | prettydate }} - {{inspection.facility}}
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,7 @@
+<div class="container-fluid">
+  <ul class="simple">
+    <li ng-repeat="result in results | orderBy:orderProp">
+      <a class="btn btn-block btn-large" href="#/inspections/{{result.id}}">{{result.name}}</a>
+    </li>
+  </ul>
+</div>
