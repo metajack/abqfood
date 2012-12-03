@@ -2,6 +2,7 @@
   (:require [compojure.core :refer [defroutes context GET]]
             [compojure.route :as route]
             [compojure.handler :as handler]
+            [ring.middleware.gzip :as gzip]
             [ring.middleware.reload :as reload]
             [ring.middleware.stacktrace :as st]
             [clojure.java.io :as io]
@@ -38,5 +39,6 @@
 
 (def app
   (-> app-routes
+      gzip/wrap-gzip
       reload/wrap-reload
       st/wrap-stacktrace))
