@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  <div ng-model="inspection">
+    <h3>{{inspection.facility_name}}</h3>
+    <p><em>Owner:</em> {{inspection.owner_name}}</p>
+    <p><em>Category:</em> {{inspection.category}}</p>
+    <p><em>Inspection:</em> {{inspection.inspection_desc}}</p>
+    <p><em>Action:</em> {{inspection.action_desc}}</p>
+    <p><em>Result:</em> {{inspection.result_desc}}</p>
+    <p ng-show="inspection.violation_desc">
+      <em>Violation:</em>
+      {{inspection.violation_desc}}
+    </p>
+    <p ng-show="inspection.inspection_memo">
+      <em>Memo:</em>
+      {{inspection.inspection_memo}}
+    </p>
+  </div>
+</div>

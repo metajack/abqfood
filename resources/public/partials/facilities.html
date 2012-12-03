@@ -1,0 +1,10 @@
+<div class="container-fluid">
+  <input class="input-block-level" type="text" ng-model="query"
+         placeholder="Filter list">
+    
+  <ul class="simple">
+    <li ng-repeat="facility in facilities | filter:query">
+      <a class="btn btn-block btn-large" href="#/facility/{{facility.id}}">{{facility.name}}</a>
+    </li>
+  </ul>
+</div>
