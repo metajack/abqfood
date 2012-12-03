@@ -25,7 +25,10 @@
 
 (defn get-facilities []
   (->> (q '[:find ?id ?name
-            :where [?e :inspect/facility-id ?id] [?e :inspect/facility-name ?name]]
+            :where
+            [?e :inspect/facility-id ?id]
+            [?e :inspect/facility-name ?name]
+            [?e :inspect/inspection-date ?date]]
           (db conn))
        (map (fn [[id name]] {:id id :name name :uri (str "/facility/" id)}))
        (sort-by :name)))
